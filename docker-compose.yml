@@ -38,10 +38,14 @@ services:
     container_name: jenkins_server
     user: root
     privileged: true
+    # Esta es la solución integrada: se da permisos a sí mismo al arrancar
+    entrypoint: >
+      sh -c "chmod 666 /var/run/docker.sock && 
+             chmod +x /usr/bin/docker && 
+             /usr/bin/tini -- /usr/local/bin/jenkins.sh"
     volumes:
       - jenkins_data:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      # Usamos el binario que Docker Desktop expone al WSL/Contenedores
       - /usr/bin/docker:/usr/bin/docker
     ports:
       - "8081:8080"
