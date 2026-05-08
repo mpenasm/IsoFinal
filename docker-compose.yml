@@ -40,8 +40,8 @@ services:
     privileged: true
     # Esta es la solución integrada: se da permisos a sí mismo al arrancar
     entrypoint: >
-      sh -c "chmod 666 /var/run/docker.sock && 
-             chmod +x /usr/bin/docker && 
+      sh -c "chmod +x /usr/bin/docker && 
+             chmod 666 /var/run/docker.sock && 
              /usr/bin/tini -- /usr/local/bin/jenkins.sh"
     volumes:
       - jenkins_data:/var/jenkins_home
