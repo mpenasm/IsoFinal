@@ -32,14 +32,16 @@ services:
       - ./api/uploads:/usr/share/nginx/html/uploads
   
   jenkins:
-    image: jenkins/jenkins:lts
     container_name: jenkins_server
-    privileged: true
-    user: root
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    user: root # Para que tenga permisos sobre el socket
     ports:
       - "8081:8080"
       - "50000:50000"
     volumes:
-      - ./jenkins_home:/var/jenkins_home
+      - jenkins_data:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker
+volumes:
+  jenkins_data:
