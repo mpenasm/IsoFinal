@@ -11,6 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Construyendo imagen de la API...'
+                // Usamos 'docker compose' directamente, que es el estándar moderno
                 sh 'docker compose build node_api'
             }
         }
