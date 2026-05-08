@@ -18,7 +18,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Verificando que la API responde...'
-                sh 'docker-compose up -d mongodb node_api'
+                sh 'docker compose up -d mongodb node_api'
                 sleep 10
                 sh 'curl -f http://node_api:4000/api/locales || exit 1'
             }
