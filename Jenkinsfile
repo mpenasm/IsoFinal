@@ -11,14 +11,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Construyendo imagen de la API...'
-                sh 'docker compose build node_api'
+                sh 'docker-compose build node_api'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Verificando que la API responde...'
-                sh 'docker compose up -d mongodb node_api'
+                sh 'docker-compose up -d mongodb node_api'
                 sleep 10
                 sh 'curl -f http://node_api:4000/api/locales || exit 1'
             }
@@ -27,7 +27,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Desplegando entorno completo...'
-                sh 'docker compose up -d'
+                sh 'docker-compose up -d'
                 sh 'docker image prune -f'
             }
         }
