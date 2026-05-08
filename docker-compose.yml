@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/db:/data/db
+
+  node_api:
+    build: ./api
+    container_name: iso_api
+    ports:
+      - "4000:4000"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - MONGODB_DB=${MONGODB_DB}
+      - NGINX_URL=${NGINX_URL}
+      - PORT=${PORT}
+    volumes:
+      - ./api/uploads:/app/uploads
+    depends_on:
+      - mongodb
+
+  nginx_server:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/usr/share/nginx/html:ro
+      - ./api/uploads:/usr/share/nginx/html/uploads
+  
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins_server
+    privileged: true
+    user: root
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker

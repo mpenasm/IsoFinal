@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Daixonar Local</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+    <div class="container">
+        <h1>🚀 Daixonar Local</h1>
+
+        <div class="form-card">
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label>Nombre del Local</label>
+                    <input type="text" id="nombre" placeholder="Ej: Pizzería Roma" required>
+                </div>
+                <div class="form-group">
+                    <label>Localidad</label>
+                    <input type="text" id="localidad" placeholder="Ej: Barcelona" required>
+                </div>
+                <div class="form-group">
+                    <label>Imagen</label>
+                    <input type="file" id="foto" accept="image/*" required>
+                </div>
+                <button type="submit">Añadir Restaurante</button>
+            </form>
+        </div>
+
+        <div id="localesGrid" class="grid"></div>
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="ver_locales.html" class="btn-ver">
+            📋 Ver lista de restaurantes
+        </a>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
