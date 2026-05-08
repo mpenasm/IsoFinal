@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Construyendo imagen de la API...'
-                sh 'docker-compose build node_api'
+                sh 'docker compose build node_api'
             }
         }
 
@@ -27,7 +27,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Desplegando entorno completo...'
-                sh 'docker-compose up -d'
+                sh 'docker compose up -d'
                 sh 'docker image prune -f'
             }
         }
