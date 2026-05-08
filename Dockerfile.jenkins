@@ -1,4 +1,7 @@
 FROM jenkins/jenkins:lts
 USER root
-RUN groupadd -g 999 docker || true && usermod -aG docker jenkins
+
+RUN ln -s /usr/bin/docker /usr/bin/docker-compose && \
+    ln -s /usr/bin/docker /usr/local/bin/docker-compose
+
 USER root
