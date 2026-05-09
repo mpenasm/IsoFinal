@@ -26,7 +26,7 @@ services:
   nginx_server:
     image: nginx:alpine
     ports:
-      - "8080:80"
+      - "8082:80"
     volumes:
       - ./public:/usr/share/nginx/html
       - ./api/uploads:/usr/share/nginx/html/uploads
