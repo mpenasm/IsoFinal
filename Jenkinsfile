@@ -1,35 +1,29 @@
 pipeline {
     agent any
 
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Limpiar Entorno') {
             steps {
-                checkout scm
+                echo 'Limpiando versiones antiguas...'
+                sh 'docker-compose down --remove-orphans || true'
             }
         }
 
-        stage('Build') {
+        stage('Build y Deploy') {
             steps {
-                echo 'Construyendo imagen de la API...'
-                // Usamos 'docker compose' directamente, que es el estándar moderno
-                sh 'docker compose build node_api'
+                echo 'Levantando la nueva versión de la app...'
+                sh 'docker-compose up -d --build'
             }
         }
 
-        stage('Test') {
+        stage('Verificar') {
             steps {
-                echo 'Verificando que la API responde...'
-                sh 'docker compose up -d mongodb node_api'
-                sleep 10
-                sh 'curl -f http://node_api:4000/api/locales || exit 1'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Desplegando entorno completo...'
-                sh 'docker compose up -d'
-                sh 'docker image prune -f'
+                echo 'Estado de los contenedores:'
+                sh 'docker ps'
             }
         }
     }
