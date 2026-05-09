@@ -15,8 +15,8 @@ pipeline {
 
         stage('Build y Deploy') {
             steps {
-                echo 'Levantando la nueva versión de la app...'
-                sh 'docker-compose up -d --build'
+                echo 'Levantando solo los servicios de la app...'
+                sh 'docker-compose up -d --build mongodb node_api nginx_server'
             }
         }
 
