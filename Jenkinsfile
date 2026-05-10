@@ -1,33 +1,39 @@
 pipeline {
     agent any
 
+    environment {
+        COMPOSE_PROJECT_NAME = 'isoproject'
+    }
+
     triggers {
         pollSCM('H/5 * * * *')
     }
 
-    stage('Limpiar Entorno') {
-    steps {
-        script {
-            // 1. Apaga solo lo que pertenece a este docker-compose (sin borrar a jenkins)
-            // Usamos -p para asegurar que el nombre del proyecto sea siempre el mismo
-            sh 'docker-compose -p proyecto_web down --remove-orphans || true'
-            
-            // 2. Limpieza de seguridad por si acaso
-            sh 'docker ps -q -f "name=gitcompose" | xargs -r docker rm -f || true'
+    stages {
+        stage('Limpiar Entorno') {
+            steps {
+                script {
+                    echo "Limpiando contenedores previos..."
+                    // Detiene y elimina contenedores del proyecto actual
+                    sh 'docker-compose down --remove-orphans || true'
+                    
+                    // Limpieza de seguridad para los nombres antiguos
+                    sh 'docker rm -f iso_api gitcompose-nginx_server-1 gitcompose-mongodb-1 || true'
+                }
+            }
         }
-    }
-} 
 
         stage('Build y Deploy') {
             steps {
-                echo 'Levantando solo los servicios de la app...'
+                echo 'Levantando servicios de la aplicación (excluyendo Jenkins)...'
+                // Solo levantamos la infraestructura de la web
                 sh 'docker-compose up -d --build mongodb node_api nginx_server'
             }
         }
 
         stage('Verificar') {
             steps {
-                echo 'Estado de los contenedores:'
+                echo 'Estado actual de los contenedores:'
                 sh 'docker ps'
             }
         }
