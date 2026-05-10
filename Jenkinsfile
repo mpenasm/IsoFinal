@@ -5,14 +5,18 @@ pipeline {
         pollSCM('H/5 * * * *')
     }
 
-    stages {
-        stage('Limpiar Entorno') {
-            steps {
-                echo 'Limpiando versiones antiguas y contenedores huérfanos...'
-                sh 'docker-compose down --remove-orphans || true'
-                sh 'docker rm -f iso_api gitcompose-nginx_server-1 gitcompose-mongodb-1 || true'
-            }
-        }   
+    stage('Limpiar Entorno') {
+    steps {
+        script {
+            // 1. Apaga solo lo que pertenece a este docker-compose (sin borrar a jenkins)
+            // Usamos -p para asegurar que el nombre del proyecto sea siempre el mismo
+            sh 'docker-compose -p proyecto_web down --remove-orphans || true'
+            
+            // 2. Limpieza de seguridad por si acaso
+            sh 'docker ps -q -f "name=gitcompose" | xargs -r docker rm -f || true'
+        }
+    }
+} 
 
         stage('Build y Deploy') {
             steps {
