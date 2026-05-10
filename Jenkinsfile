@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        PROJECT_NAME = 'proyectofinal12'
+        COMPOSE_PROJECT_NAME = 'proyectofinal12'
     }
 
     triggers {
