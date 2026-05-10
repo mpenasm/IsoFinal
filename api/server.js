@@ -45,6 +45,10 @@ async function startServer() {
       }
     });
 
+    app.get('/health', (req, res) => {
+      res.status(200).send('OK');
+    });
+
     app.post('/api/locales', upload.single('foto'), async (req, res) => {
       try {
         const nuevoLocal = {
