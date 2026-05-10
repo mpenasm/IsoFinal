@@ -10,11 +10,9 @@ pipeline {
             steps {
                 echo 'Limpiando versiones antiguas y contenedores huérfanos...'
                 sh 'docker-compose down --remove-orphans || true'
-                
-                sh 'docker rm -f iso_api || true'
-                sh 'docker rm -f gitcompose-nginx_server-1 || true'
+                sh 'docker rm -f iso_api gitcompose-nginx_server-1 gitcompose-mongodb-1 || true'
             }
-        }
+        }   
 
         stage('Build y Deploy') {
             steps {
