@@ -33,7 +33,7 @@ pipeline {
                     sleep 10 
                     
                     sh '''
-                        curl -f http://localhost:4000/health || (echo "API no responde" && exit 1)
+                        curl -f http://node_api:4000/health || (echo "API no responde" && exit 1)
                     '''
                     echo 'Test superado con éxito.'
                 }
