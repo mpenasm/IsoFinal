@@ -1,43 +1,56 @@
 pipeline {
     agent any
+    environment {
+        PROJECT_NAME = 'proyectofinal12'
+    }
 
     triggers {
         pollSCM('H/5 * * * *')
     }
 
     stages {
-        stage('Limpiar Entorno') {
+        stage('1. Checkout') {
+            steps {
+                checkout scm
+                echo 'Código actualizado.'
+            }
+        }
+
+        stage('2. Build') {
+            steps {
+                echo 'Construyendo imágenes...'
+                sh 'docker-compose build'
+            }
+        }
+
+        stage('3. Test') {
             steps {
                 script {
-                    echo 'Limpiando contenedores conflictivos...'
-                    // 1. Bajamos el compose actual (por si acaso)
-                    sh 'docker-compose down --remove-orphans || true'
+                    echo 'Levantando entorno de prueba...'
+                    sh 'docker-compose up -d mongodb node_api'
                     
-                    // 2. BORRADO MANUAL POR NOMBRE (Aquí está la clave)
-                    // Borramos 'iso_api' porque es el que da el error de conflicto.
-                    // Añadimos los otros por si acaso se quedaron colgados con otros nombres.
+                    echo 'Esperando a que la API esté lista...'
+                    sleep 10 
+                    
                     sh '''
-                        docker rm -f iso_api || true
-                        docker rm -f proyectofinal12-nginx_server-1 || true
-                        docker rm -f proyectofinal12-mongodb-1 || true
+                        curl -f http://localhost:4000/health || (echo "API no responde" && exit 1)
                     '''
-                    echo 'Entorno limpio.'
+                    echo 'Test superado con éxito.'
                 }
             }
         }
 
-        stage('Build y Deploy') {
+        stage('4. Deploy') {
             steps {
-                echo 'Levantando solo los servicios de la app...'
-                sh 'docker-compose up -d --build mongodb node_api nginx_server'
+                echo 'Despliegue final con Nginx...'
+                sh 'docker-compose up -d --remove-orphans mongodb node_api nginx_server'
             }
         }
+    }
 
-        stage('Verificar') {
-            steps {
-                echo 'Estado de los contenedores:'
-                sh 'docker ps'
-            }
+    post {
+        always {
+            sh 'docker ps'
         }
     }
 }
