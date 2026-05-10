@@ -6,7 +6,14 @@
 
 1- git clone https://github.com/mpenasm/IsoFinal.git<br>
 2- cd IsoFinal<br>
-3- docker-compose -d --build<br>
+3- cp ~\Downloads\ .env .<br>
+4- docker-compose -d --build<br>
+5- docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword<br>
+6- acceder a Jenkins - http://localhost:8081<br>
+7- instalar plugins recomendados<br>
+8- crear usuario, tarea del pipeline y meter las variables del .env en las credenciales de Jenkins
+
+![creds](./img/creds.png)
 
 ## 2. Pipeline de Jenkins
 
