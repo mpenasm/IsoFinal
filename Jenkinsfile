@@ -18,10 +18,8 @@ pipeline {
                     // Añadimos los otros por si acaso se quedaron colgados con otros nombres.
                     sh '''
                         docker rm -f iso_api || true
-                        docker rm -f gitcompose-nginx_server-1 || true
-                        docker rm -f gitcompose-mongodb-1 || true
-                        docker rm -f isoproject-nginx_server-1 || true
-                        docker rm -f isoproject-mongodb-1 || true
+                        docker rm -f proyectofinal12-nginx_server-1 || true
+                        docker rm -f proyectofinal12-mongodb-1 || true
                     '''
                     echo 'Entorno limpio.'
                 }
