@@ -2,6 +2,10 @@ pipeline {
     agent any
     environment {
         COMPOSE_PROJECT_NAME = 'proyectofinal12'
+        MONGODB_URI = credentials('CRED_MONGO_URI')
+        MONGODB_DB  = credentials('CRED_MONGO_DB')
+        NGINX_URL   = credentials('CRED_NGINX')
+        PORT        = '4000'
     }
 
     triggers {

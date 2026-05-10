@@ -13,9 +13,9 @@ services:
     ports:
       - "4000:4000"
     environment:
-      - MONGODB_URI=${MONGODB_URI:-mongodb://mongodb:27017}
-      - MONGODB_DB=${MONGODB_DB:-IsoDB}
-      - NGINX_URL=${NGINX_URL:-http://localhost:8082}
+      - MONGODB_URI=${MONGODB_URI}
+      - MONGODB_DB=${MONGODB_DB}
+      - NGINX_URL=${NGINX_URL}
       - PORT=${PORT:-4000}
     volumes:
       - ./api/uploads:/app/uploads
