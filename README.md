@@ -43,6 +43,7 @@
 
 - Hacer una web nueva para empezar de 0.
 - Meter Jenkins en un contenedor del compose para levantarlo todo de una.
+- Credenciales en Jenkins
 
 ## 4. Dificultades encontradas
 
@@ -54,4 +55,3 @@
 
 ![xd](./img/54735738.jpeg)
 ![xdd](./img/jks.jpg)
-![gh](./img/captura.png)
