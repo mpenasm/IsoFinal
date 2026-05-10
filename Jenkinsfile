@@ -9,11 +9,10 @@ pipeline {
         stage('Limpiar Entorno') {
             steps {
                 echo 'Limpiando versiones antiguas y contenedores huérfanos...'
-                // 1. Intentamos bajar lo que reconozca el compose
                 sh 'docker-compose down --remove-orphans || true'
                 
-                // 2. Forzamos el borrado de iso_api por si acaso quedó bloqueado
                 sh 'docker rm -f iso_api || true'
+                sh 'docker rm -f gitcompose-nginx_server-1 || true'
             }
         }
 
